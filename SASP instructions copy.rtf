@@ -1,0 +1,148 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Monaco;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww15080\viewh13120\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 mini-SASP instructions\
+\
+miniature Scanning Aerosol Sun Photometer\
+\
+
+\b OPERATION
+\b0 \
+\
+- Make sure SD card is in and seated\
+- Power on, verify with LED\
+- Verify rotation if possible\
+- SASP makes one file each time power is cycled. Dates/times on file will not be correct; this is confusing but OK.\
+    Ellis suggested putting old files in a folder\
+- Download data after each flight and send to me. There is a micro Sd to USB adaptor in my kit,\
+- (Leave record switch on; this can only be accessed if box if off)\
+- after flight check to be there is a file, a few MB per hour.\
+\
+
+\b FLIGHT PATHS
+\b0 \
+\
+- a few minutes level flight at each of a variety of different altitudes, perhaps 1000' apart\
+- large altitude range, don't need to be heroic\
+- altitude legs should be stacked or on sun slant, not in-line steps\
+- SASP compensates for modest (up to 10 degree) pitch and roll\
+- compensation fails at near-vertical sun. \
+- Best data when the sun is 10 to 40 degrees from the horizon, good data up to about 65 degrees from the horizon\
+\
+----------------------------------------------------------------------------------------------------------------------------\
+\
+
+\b POWER
+\b0 \
+ - Battery or DC supply voltage can be from about 7 V to well over 15 V DC. Because the maximum voltage from an regulated supply can be higher when there is a small power draw the nominal voltage should not exceed 15 V. Most of my tests have used 9V or 12V.\
+ - Typical power consumption is a few watts, could be a maximum of about 8 watts if the heater is near full power.\
+ - There is a coin battery on the board to provide backup power to the GPS and the clock on the data recording module. The unit will operate without this battery but the GPS will take a long time to acquire and the data files will have the wrong dates and times. (Correct dates and times still inside the data files.)\
+\
+
+\b MOUNTING
+\b0 \
+  - SASP would typically project through a hole in the aircraft top with the skin at the middle of the solid cylindrical part of the dome, below the hemispherical part and above the legs\
+  - It can be mounted as it sits or one can put standoffs going up from where the four screwheads are on the aluminum plate just outside the main gear. With those standoffs one can hang SASP from above.\
+  - If desired the lower circuit board can be moved to another spot relative to the aluminum plate, gear and dome..\
+  - The GPS has a patch antenna that must see the sky. The GPS module can even be moved off the circuit board if required.\
+  - Mounting must allow access to the micro SD card.\
+\
+
+\b OPERATION
+\b0 \
+  - The unit is turned on and off simply by switching the power.\
+  - There is a "record" switch (red). Data are recorded only when this switch is on. It is safer to keep it on. The main reason to turn it off is to avoid cluttering the SD card with a lot of files from turning the instrument on for tests, etc.\
+  - At power up the telescope goes to about 45 degrees elevation then usually to near zero elevation.\
+  - The GPS will take anywhere from less than a minute to over 5 minutes to acquire position.  Acquisition takes longer if the GPS forgets where it is (coin battery backup). The red LED on the GPS module will stop flashing when GPS position is acquired. At that point the telescope should go to the elevation angle of the sun.\
+  - Check for good rotation and that the elevation angle is correct after the GPS has acquired a signal. I sometimes take a small card like a business card and turn it to minimize the size of its shadow, then compare that to the telescope angle.\
+  - Attitude compensation may not work until the unit has completed at least one full revolution.\
+  - The data recording module ("Slerj", underside of the circuit board) writes the data to an SD card, one file for every time it is turned on. The unit acquires very roughly 5 MB per hour.\
+  - Attitude compensation works at elevation angles less than about 50 or 60 degrees. Attitude compensation will fail at near-vertical elevation angles. Of course it is better not to have a lot of pitch and roll. Angles of at least 10 degrees are tolerated well, 20 degrees is marginal.\
+\
+
+\b ADJUSTMENTS
+\b0 \
+  - The only simple electrical adjustment is a small potentiometer on the stepper motor driver module (white rectangle). This adjusts the maximum motor current. If too low the stepper motor can stall. If too high the stepper motor becomes jerky. The photometer will work fine but there is more vibration and probably more electrical noise.\
+  - The tightness of the worm gear to the azimuth spur gear should not need adjustment but can be adjusted by moving the stepper motor with its mount relative to the aluminum plate with the three button head screws.\
+  - The temperature of the heater on the side of the telescope can be adjusted by changing the chip resistor on it. Consult the data sheet for temperatures. The heater maintains itself at the set temperature. Increasing the temperature will make the signals more stable in warm weather at the expense of increased dark current and power consumption. I think they are set now to about 22 C. Temperature control is not critical.\
+\
+
+\b KNOWN ISSUES\
+
+\b0   - The strip of heavy paper/plastic that covers the slot in the telescope dome (and moves with the telescope) can occasionally catch on the telescope yoke. To correct this problem we are planning on printing new domes with modified tracks for the paper.\
+  - The data recorder seems to frequently lose the date and time, as if the clock battery loses contact. Then the files written to the SD card have the wrong file name and wrong file date information. The information inside the files is still correct. I can provide Arduino code to manually reset the data recorder. At present it requires somebody experienced enough in using an Arduino who can install the reset software, run it, and then reinstall the regular software. The reset software needs to be manually edited every time for the correct date and time. See note below that it is not wise to run or program the SASP with the USB connected and no other power.\
+  - The "home sensor" is a photosensor on the underside of the aluminum plate. It that watches for the black stripe on the round piece. The home sensor mount (the black printed plastic about 1 cm rectangle) has been known to rub on the plate. Wiring to the home sensor is somewhat fragile. Bright sunlight on the underside of the main gear can interfere with this sensor (unlikely except in testing).\
+  - The dates and times written inside the data file should work across midnight UT but that has not been extensively tested. It will probably fail across a new year in UT. I'm not sure about a new month. The data would be recoverable with extra work on reading out the files. For example, running continuously from Dec 31 2016 to Jan 1 2017 will probably result in data written as if Jan 1 2016 followed Dec 31 2016.\
+  - The stepper motor can run warm and has not been tested in extremely hot conditions.\
+  - An extremely noisy wall power adaptor can induce noise in the data.\
+  - Not an issue, but be aware that just connecting the USB cable to the Arduino without external power can cause problems. The USB doesn't supply enough power to run the stepper motor plus the heater and the resulting marginal voltages can give weird symptoms. Just provide external power in the usual way.\
+\
+
+\b ELECTRICAL TESTS
+\b0 \
+ - The SASP was quite resistant to interference on the Manta UAV. The photodiode currents are digitized right at the back of the telescope so there is little pickup.\
+ - There were indications that a previous brand of elevation servo generated some interference. I have not seen it on the current servo. If you suspect the SASP is generating noise in other instruments you can test the servo by deliberately tipping the unit so the attitude correction makes a lot of adjustments and seeing if the noise increases. If so, I recommend a ferrite bead on the wires to the servo motor above the slip ring.\
+- The power supplies should not produce any noticeable electrical noise. \
+ - The raw data can be viewed with the standard Arduino software interface and a USB cable to the Arduino. 57600 baud. \
+  - If it is inconvenient to have the dome rotating during testing just unplug the stepper motor. Only unplug or plug in the stepper motor when all power is off.\
+\
+
+\b OTHER TESTS
+\b0 \
+- A very occasional test for dark current and digitizer offset is useful. Block all light entering the telescopes and run the unit for perhaps 5 minutes. I've used electrical tape, being careful not to get adhesive on the lenses. It doesn't take much light leakage to overwhelm the dark current. The resulting dark current readings are not used in the photometer itself but can be entered later into the data processing code.\
+\
+
+\b READING THE DATA
+\b0 \
+- The data are recorded as text files so they can be viewed in any text editor. Some basic operation can be verified. For example in reasonably bright light the long integration periods should saturate at 65535 but the short integration periods should not (see format below)\
+- My analysis software is written in IDL (I know the language well.) If you have it I'm happy to share my code.\
+- If you don't have IDL it would be good to translate a at least a simple read program into your favorite language so that you can verify operation. I have it on my list to have a simple Python reader but I'm not sure when or even if that will be ready. \
+- For more dynamic range, the photodiodes are read with alternating 0.9 and 29.1 us integration times (just like a shutter speed). These can be merged into a single data stream using the short integration time only when the long integration time saturates. The four channels are read simultaneously.\
+ - Note that the data include a pretty good barometer.\
+  - The latitude, longitude, and GPS time recorded in the file before the GPS acquires signal are of course incorrect. My analysis software attempts to correct this (for example by substituting the first valid latitude for the invalid latitudes) but there may be bugs. It can be easier to ignore the first couple thousand lines of data in the file. One can also wait and only move the record switch to "on" after the GPS has acquired. This requires remembering to move the switch, so I'm not sure I recommend it.\
+\
+
+\b CLEANING
+\b0 \
+- The lenses may need to be cleaned. They are behind the four 1 mm diameter holes in the plate on the end of the telescope. Dusting them off with clean "air" is fine. The center screw allows the cover to come off for access to the lens surfaces. Clean by pulling optical quality cleaning paper wetted with clean solvent over the lenses. The front lenses can come out if you want, the inner optics should be retained with set screws on the side of the telescope. Note that the 870 nm channel lens has a different antireflection coating than the other lenses.\
+\
+
+\b FILE FORMAT
+\b0 \
+\
+- Sample data look like:\
+ 44,68,45,45,37,158,126,92,21115,0,247.2,39,35\
+\pard\pardeftab720\partightenfactor0
+\cf0  45,68,44,44,58,177,133,98,21118,0,247.6,40,22\
+ 44,70,46,45,83,197,139,105,21121,2,17.81694,1224,19272\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 ...\
+-The first four integers are the four channels for the short integration period (0 to 65535)\
+- The next four integers are the four channels for the long integration period (0 to less than 65535)\
+- The next long integer is the Arduino clock time in tens of milliseconds, meaasured from the time the Arduino was last powered up.\
+- The next integer is a code (0 to 5) for the last three numbers. (0, 0, then 2 for the three sample lines above.)\
+  0: nominal azimuth, home sensor voltage output, calculation time used (an internal Arduino check)\
+  1: latitude, longitude, temperature (at back of telescope)\
+  2: GPS hours (double precision), monthday code (e.g. the above 1224 is December 24th), and internal time of last GPS read\
+  3: Yaw, Pitch, and Roll\
+  4: Barometric pressure, temperature of barometer, and a flag for the instrument operating mode (not used in your unit)\
+  5: length of long integration, length of short integration, and a constant subtracted in the Arduino before writing the photodiode data. These never change unless the Arduino code is changed but it helps to have them in the output file.\
+\
+ - There are occasional lines of text commands (commonly $VNRRG,8*4B) that represent communication from the Arduino to the attitude sensor (VectorNav) and/or the GPS. These get incorporated into the data file but should be ignored.\
+- There is a header on the data file arising from the Arduino reading the EPROM in the barometer. These constants may be ignored. (The header may not be present if the record switch is turned on after power-up.)\
+\
+\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs22 \cf0               
+\f0\fs24 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+\
+}
